@@ -1,5 +1,6 @@
 #include "axp192.h"
 #include "esphome/core/log.h"
+#include "esphome/core/hal.h"
 #include "esp_sleep.h"
 
 namespace esphome {
