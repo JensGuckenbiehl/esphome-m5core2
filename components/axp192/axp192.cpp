@@ -114,6 +114,8 @@ void AXP192Component::begin() {
     // if not, enable M-Bus 5V output
     SetBusPowerMode(kMBusModeOutput);
   }
+  
+  SetSpkEnable(true);
 }
 void AXP192Component::Write1Byte( uint8_t Addr ,  uint8_t Data )
 {
