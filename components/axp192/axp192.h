@@ -30,6 +30,7 @@ public:
   void set_batterylevel_sensor(sensor::Sensor *batterylevel_sensor) { batterylevel_sensor_ = batterylevel_sensor; }
   void set_brightness(float brightness) { brightness_ = brightness; }
   void set_model(AXP192Model model) { this->model_ = model; }
+  void set_sound(bool sound) { this->sound_ = sound; }
 
   // ========== INTERNAL METHODS ==========
   // (In most use cases you won't need these)
@@ -62,6 +63,8 @@ protected:
   float brightness_{1.0f};
   float curr_brightness_{-1.0f};
   AXP192Model model_;
+  bool sound_{false};
+  bool curr_sound_{false};
 
   void  begin();
   void  UpdateBrightness();

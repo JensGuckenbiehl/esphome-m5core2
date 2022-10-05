@@ -45,6 +45,11 @@ void AXP192Component::update() {
     }
 
     UpdateBrightness();
+
+    if(curr_sound_ != sound_) {
+      curr_sound_ = sound_;
+      SetSpkEnable(curr_sound_);
+    }
 }
 
 void AXP192Component::UpdateBrightness()
@@ -115,7 +120,8 @@ void AXP192Component::begin() {
     SetBusPowerMode(kMBusModeOutput);
   }
   
-  SetSpkEnable(true);
+  SetSpkEnable(sound_);
+  curr_sound_ = sound_;
 }
 void AXP192Component::Write1Byte( uint8_t Addr ,  uint8_t Data )
 {

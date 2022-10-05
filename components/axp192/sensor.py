@@ -27,6 +27,7 @@ CONFIG_SCHEMA = cv.Schema({
             icon=ICON_BATTERY,
         ),
     cv.Optional(CONF_BRIGHTNESS, default=1.0): cv.percentage,
+    cv.Optional("sound", default=False): cv.boolean,
 }).extend(cv.polling_component_schema('60s')).extend(i2c.i2c_device_schema(0x77))
 
 
@@ -44,3 +45,7 @@ def to_code(config):
     if CONF_BRIGHTNESS in config:
         conf = config[CONF_BRIGHTNESS]
         cg.add(var.set_brightness(conf))
+
+    if "sound" in config:
+        conf = config["sound"]
+        cg.add(var.set_sound(conf))
