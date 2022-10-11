@@ -62,6 +62,9 @@ void AXP192Component::UpdateBrightness()
     curr_brightness_ = brightness_;
 
     ScreenBreath(brightness_ * 100);
+   if(brightness_ <= 0.01) {
+    SetDCDC3(false);
+  }
 }
 
 void AXP192Component::begin() {
