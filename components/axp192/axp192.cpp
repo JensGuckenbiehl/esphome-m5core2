@@ -124,7 +124,7 @@ void AXP192Component::begin() {
   curr_sound_ = sound_;
   
   ScreenBreath(brightness_ * 100);
-  if(brightness_ < 0) {
+  if(brightness_ <= 0.01) {
     SetDCDC3(false);
   }
 }
