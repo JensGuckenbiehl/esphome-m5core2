@@ -122,6 +122,8 @@ void AXP192Component::begin() {
   
   SetSpkEnable(sound_);
   curr_sound_ = sound_;
+  
+  UpdateBrightness();
 }
 void AXP192Component::Write1Byte( uint8_t Addr ,  uint8_t Data )
 {
