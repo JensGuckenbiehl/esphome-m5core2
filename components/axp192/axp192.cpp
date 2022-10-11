@@ -124,6 +124,9 @@ void AXP192Component::begin() {
   curr_sound_ = sound_;
   
   ScreenBreath(brightness_ * 100);
+  if(brightness_ < 0) {
+    SetDCDC3(false);
+  }
 }
 void AXP192Component::Write1Byte( uint8_t Addr ,  uint8_t Data )
 {
