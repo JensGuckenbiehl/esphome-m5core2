@@ -114,7 +114,7 @@ void AXP192Component::begin() {
   SetPeripherialsPower(true);
 
   // axp: check v-bus status
-  if (Read8bit(0x00) & 0x08) {
+  if (true || (Read8bit(0x00) & 0x08)) {
     Write1Byte(0x30, Read8bit(0x30) | 0x80);
     // if v-bus can use, disable M-Bus 5V output to input
     SetBusPowerMode(kMBusModeInput);
