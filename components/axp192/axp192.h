@@ -2,14 +2,12 @@
 #define __AXP192_H__
 
 #include "esphome/core/component.h"
-#include "esphome/components/sensor/sensor.h"
 #include "esphome/components/i2c/i2c.h"
 
 namespace esphome {
 namespace axp192 {
 
 enum AXP192Model {
-  AXP192_M5STICKC = 0,
   AXP192_M5CORE2,
 };
 
@@ -25,10 +23,8 @@ typedef enum {
   kMBusModeInput = 1    // powered by outside input
 } mbus_mode_t;
 
-class AXP192Component : public PollingComponent, public i2c::I2CDevice {
+class AXP192Component : public Component, public i2c::I2CDevice {
 public:
-  void set_batterylevel_sensor(sensor::Sensor *batterylevel_sensor) { batterylevel_sensor_ = batterylevel_sensor; }
-  void set_brightness(float brightness) { brightness_ = brightness; }
   void set_model(AXP192Model model) { this->model_ = model; }
   void set_sound(bool sound) { this->sound_ = sound; }
 
@@ -37,7 +33,6 @@ public:
   void setup() override;
   void dump_config() override;
   float get_setup_priority() const override;
-  void update() override;
 
   enum CHGCurrent {
     kCHG_100mA = 0,
@@ -58,16 +53,13 @@ public:
     kCHG_1320mA,
   };
 
+  void SetBrightness(float value);
+
 protected:
-  sensor::Sensor *batterylevel_sensor_;
-  float brightness_{1.0f};
-  float curr_brightness_{-1.0f};
   AXP192Model model_;
   bool sound_{false};
-  bool curr_sound_{false};
 
   void  begin();
-  void  UpdateBrightness();
   bool  GetBatState();
 
   void ScreenBreath(int brightness);

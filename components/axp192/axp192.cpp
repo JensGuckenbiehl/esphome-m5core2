@@ -6,14 +6,10 @@
 namespace esphome {
 namespace axp192 {
 
-static const char *TAG = "axp192.sensor";
+static const char *TAG = "axp192";
 void AXP192Component::setup() 
 {
   switch (this->model_) {
-    case AXP192_M5STICKC:
-    {
-        // NOT SUPPORTED
-    }
     case AXP192_M5CORE2:
     {
         begin();
@@ -24,48 +20,9 @@ void AXP192Component::setup()
 void AXP192Component::dump_config() {
   ESP_LOGCONFIG(TAG, "AXP192:");
   LOG_I2C_DEVICE(this);
-  LOG_SENSOR("  ", "Battery Level", this->batterylevel_sensor_);
 }
 
 float AXP192Component::get_setup_priority() const { return setup_priority::HARDWARE; }
-
-void AXP192Component::update() {
-
-    if (this->batterylevel_sensor_ != nullptr) {
-      // To be fixed
-      // This is not giving the right value - mostly there to have some sample sensor...
-      float vbat = GetBatVoltage();
-      float batterylevel = 100.0 * ((vbat - 3.0) / (4.1 - 3.0));
-
-      ESP_LOGD(TAG, "Got Battery Level=%f (%f)", batterylevel, vbat);
-      if (batterylevel > 100.) {
-        batterylevel = 100;
-      }
-      this->batterylevel_sensor_->publish_state(batterylevel);
-    }
-
-    UpdateBrightness();
-
-    if(curr_sound_ != sound_) {
-      curr_sound_ = sound_;
-      SetSpkEnable(curr_sound_);
-    }
-}
-
-void AXP192Component::UpdateBrightness()
-{
-    ESP_LOGD(TAG, "Brightness=%f (Curr: %f)", brightness_, curr_brightness_);
-    if (brightness_ == curr_brightness_)
-    {
-        return;
-    }
-    curr_brightness_ = brightness_;
-
-    ScreenBreath(brightness_ * 100);
-   if(brightness_ <= 0.01) {
-    SetDCDC3(false);
-  }
-}
 
 void AXP192Component::begin() {
   //AXP192 30H
@@ -124,12 +81,6 @@ void AXP192Component::begin() {
   }
   
   SetSpkEnable(sound_);
-  curr_sound_ = sound_;
-  
-  ScreenBreath(brightness_ * 100);
-  if(brightness_ <= 0.01) {
-    SetDCDC3(false);
-  }
 }
 void AXP192Component::Write1Byte( uint8_t Addr ,  uint8_t Data )
 {
@@ -203,6 +154,19 @@ uint32_t AXP192Component::Read32bit( uint8_t Addr )
 void AXP192Component::ReadBuff( uint8_t Addr , uint8_t Size , uint8_t *Buff )
 {
     this->read_bytes(Addr, Buff, Size);
+}
+
+void AXP192Component::SetBrightness(float value) {
+
+  if(value > 0) {
+    SetDCDC3(true);
+  } else {
+    SetDCDC3(false);
+    return;
+  }
+
+  int vol = (value * 900 / 100) + 2400;
+  SetLcdVoltage((uint16_t)vol);
 }
 
 void AXP192Component::ScreenBreath(int brightness) {
@@ -488,7 +452,7 @@ void AXP192Component::SetESPVoltage(uint16_t voltage) {
 }
 
 void AXP192Component::SetLcdVoltage(uint16_t voltage) {
-  if (voltage >= 2500 && voltage <= 3300) {
+  if (voltage >= 2400 && voltage <= 3300) {
     SetDCVoltage(2, voltage);
   }
 }
@@ -593,4 +557,3 @@ void AXP192Component::SetPeripherialsPower(uint8_t state) {
 
 }
 }
-
