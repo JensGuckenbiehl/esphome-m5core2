@@ -166,6 +166,7 @@ void AXP192Component::SetBrightness(float value) {
   }
 
   int vol = (value * 900 / 100) + 2400;
+  ESP_LOGD(TAG, "set lcd voltage %d", vol);
   SetLcdVoltage((uint16_t)vol);
 }
 

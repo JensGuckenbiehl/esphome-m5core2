@@ -8,6 +8,7 @@ namespace axp192 {
 static const char *const TAG = "axp192_output";
 
 void AXP192ComponentOutput::write_state(float state) {
+    ESP_LOGD(TAG, "write state %f", state);
     this->parent_->SetBrightness(state);
 }
 
