@@ -13,8 +13,7 @@ void AXP192ComponentOutput::write_state(float state) {
 }
 
 void AXP192ComponentOutput::setup() {
-    this->turn_on();
-    //this->set_level(0.5f);
+    this->turn_off();
 }
 
 void AXP192ComponentOutput::dump_config() {
