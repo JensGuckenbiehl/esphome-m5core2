@@ -165,14 +165,14 @@ void AXP192Component::SetBrightness(float value) {
     return;
   }
 
-  int vol = (value * 900) + 2400;
+  int vol = (value * 800) + 2500;
   ESP_LOGD(TAG, "set lcd voltage %d", vol);
   SetLcdVoltage((uint16_t)vol);
 }
 
 void AXP192Component::ScreenBreath(int brightness) {
   //int vol = map(brightness, 0, 100, 2400, 3300);
-  int vol = (brightness * 900 / 100) + 2400;
+  int vol = (brightness * 800 / 100) + 2500;
   // Serial.printf("brightness:%d\n", brightness);
 
   // Serial.printf("vol:%d\n", vol);
@@ -453,7 +453,7 @@ void AXP192Component::SetESPVoltage(uint16_t voltage) {
 }
 
 void AXP192Component::SetLcdVoltage(uint16_t voltage) {
-  if (voltage >= 2400 && voltage <= 3300) {
+  if (voltage >= 2500 && voltage <= 3300) {
     SetDCVoltage(2, voltage);
   }
 }
